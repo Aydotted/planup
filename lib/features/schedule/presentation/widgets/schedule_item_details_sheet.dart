@@ -71,6 +71,24 @@ class ScheduleItemDetailsSheet extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: () async {
+                  await context.read<ScheduleItemController>().toggleCompleted(
+                    item,
+                  );
+                  if (!context.mounted) return;
+
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.check_circle),
+                label: Text(
+                  item.completed ? 'Mark Incomplete' : 'Mark Complete',
+                ),
+              ),
+            ),
+
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: () async {
                   await context.read<ScheduleItemController>().deleteItem(
                     item.id,
                   );

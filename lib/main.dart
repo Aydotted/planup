@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:planup_fixed_new/features/schedule/domain/entities/schedule_item.dart';
@@ -12,33 +14,39 @@ import 'features/shifts/domain/entities/shift_template.dart';
 import 'features/habits/domain/entities/habit.dart';
 
 import 'shared/services/notification_service.dart';
+import 'shared/services/error_logging_service.dart';
+import 'shared/services/error_logger.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  runZonedGuarded(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
 
-  await Hive.initFlutter();
+      FlutterError.onError = ErrorLogger.logFlutterError;
 
-  await NotificationService.init();
+      await Hive.initFlutter();
 
-  Hive.registerAdapter(TaskAdapter());
-  Hive.registerAdapter(CategoryAdapter());
-  Hive.registerAdapter(ShiftAdapter());
-  Hive.registerAdapter(HabitAdapter());
-  Hive.registerAdapter(ShiftTemplateAdapter());
-  Hive.registerAdapter(ScheduleItemTypeAdapter());
-  Hive.registerAdapter(ScheduleItemAdapter());
+      await NotificationService.init();
 
-  await Hive.openBox<Task>('tasks');
-  await Hive.openBox<Category>('categories');
-  await Hive.openBox<Shift>('shifts');
-  await Hive.openBox<ShiftTemplate>('shiftTemplates');
-  await Hive.openBox<Habit>('Habits');
-  await Hive.openBox<ScheduleItem>('scheduleItems');
-  debugPrint('habits: ${Hive.isBoxOpen('habits')}');
+      Hive.registerAdapter(TaskAdapter());
+      Hive.registerAdapter(CategoryAdapter());
+      Hive.registerAdapter(ShiftAdapter());
+      Hive.registerAdapter(HabitAdapter());
+      Hive.registerAdapter(ShiftTemplateAdapter());
+      Hive.registerAdapter(ScheduleItemTypeAdapter());
+      Hive.registerAdapter(ScheduleItemAdapter());
 
-  debugPrint('tasks: ${Hive.isBoxOpen('tasks')}');
-  debugPrint('categories: ${Hive.isBoxOpen('categories')}');
-  debugPrint('shifts: ${Hive.isBoxOpen('shifts')}');
+      await Hive.openBox<Task>('tasks');
+      await Hive.openBox<Category>('categories');
+      await Hive.openBox<Shift>('shifts');
+      await Hive.openBox<ShiftTemplate>('shiftTemplates');
+      await Hive.openBox<Habit>('habits');
+      await Hive.openBox<ScheduleItem>('scheduleItems');
 
-  runApp(const PlanUpApp());
+      runApp(const PlanUpApp());
+    },
+    (error, stackTrace) {
+      ErrorLoggingService.logError(error, stackTrace);
+    },
+  );
 }

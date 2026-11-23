@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:planup_fixed_new/features/calendar/presentation/controllers/calendar_controller.dart';
+import 'package:planup_fixed_new/features/shifts/domain/entities/shift.dart';
 import 'package:provider/provider.dart';
 import 'package:planup_fixed_new/features/schedule/presentation/widgets/schedule_item_details_sheet.dart';
 
@@ -134,48 +137,59 @@ class _HomeScreenState extends State<HomeScreen>
     };
 
     for (final shift in calendar.shifts) {
-      final weekday = shift.date.weekday;
-      final category = categoryController.categories.isEmpty
-          ? null
-          : categoryController.categories.firstWhere(
-              (c) => c.id == shift.categoryId,
-            );
-      final abbr =
-          shift.abbreviation ??
-          category?.abbreviation ??
-          shift.shiftType
-              .split(' ')
-              .map((w) => w[0])
-              .take(2)
-              .join()
-              .toUpperCase();
+      try {
+        final weekday = shift.date.weekday;
 
-      final shiftcolor = shift.colorValue != null
-          ? Color(shift.colorValue!)
-          : _getShiftColour(shift.shiftType);
+        dynamic category;
 
-      switch (weekday) {
-        case DateTime.monday:
-          weeklyShift["Mon"] = {"abbr": abbr, "color": shiftcolor};
-          break;
-        case DateTime.tuesday:
-          weeklyShift["Tue"] = {"abbr": abbr, "color": shiftcolor};
-          break;
-        case DateTime.wednesday:
-          weeklyShift["Wed"] = {"abbr": abbr, "color": shiftcolor};
-          break;
-        case DateTime.thursday:
-          weeklyShift["Thu"] = {"abbr": abbr, "color": shiftcolor};
-          break;
-        case DateTime.friday:
-          weeklyShift["Fri"] = {"abbr": abbr, "color": shiftcolor};
-          break;
-        case DateTime.saturday:
-          weeklyShift["Sat"] = {"abbr": abbr, "color": shiftcolor};
-          break;
-        case DateTime.sunday:
-          weeklyShift["Sun"] = {"abbr": abbr, "color": shiftcolor};
-          break;
+        try {
+          category = categoryController.categories.firstWhere(
+            (c) => c.id == shift.categoryId,
+          );
+        } catch (_) {
+          category = null;
+        }
+
+        final abbr =
+            shift.abbreviation ??
+            category?.abbreviation ??
+            shift.shiftType
+                .split(' ')
+                .map((w) => w[0])
+                .take(2)
+                .join()
+                .toUpperCase();
+
+        final shiftcolor = shift.colorValue != null
+            ? Color(shift.colorValue!)
+            : _getShiftColour(shift.shiftType);
+
+        switch (weekday) {
+          case DateTime.monday:
+            weeklyShift["Mon"] = {"abbr": abbr, "color": shiftcolor};
+            break;
+          case DateTime.tuesday:
+            weeklyShift["Tue"] = {"abbr": abbr, "color": shiftcolor};
+            break;
+          case DateTime.wednesday:
+            weeklyShift["Wed"] = {"abbr": abbr, "color": shiftcolor};
+            break;
+          case DateTime.thursday:
+            weeklyShift["Thu"] = {"abbr": abbr, "color": shiftcolor};
+            break;
+          case DateTime.friday:
+            weeklyShift["Fri"] = {"abbr": abbr, "color": shiftcolor};
+            break;
+          case DateTime.saturday:
+            weeklyShift["Sat"] = {"abbr": abbr, "color": shiftcolor};
+            break;
+          case DateTime.sunday:
+            weeklyShift["Sun"] = {"abbr": abbr, "color": shiftcolor};
+            break;
+        }
+      } catch (e, stackTrace) {
+        debugPrint('weekly timeline error for ${shift.shiftType}:$e');
+        debugPrintStack(stackTrace: stackTrace);
       }
     }
 

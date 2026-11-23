@@ -8,6 +8,7 @@ import '../../../tasks/domain/entities/task.dart';
 import '../../../tasks/presentation/controllers/task_controller.dart';
 import '../../../category/domain/entities/category.dart';
 import '../../../category/presentation/category_picker_screen.dart';
+import '../../../../shared/services/error_logger.dart';
 
 class AddTaskScreen extends StatefulWidget {
   final DateTime? prefilledDate;
@@ -135,6 +136,15 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     );
 
     await context.read<TaskController>().addTask(task);
+
+    ErrorLogger.logCustom(
+      'Task created',
+      error: Exception(
+        'Title: ${task.title}, '
+        'Category: ${task.categoryName}, '
+        'Due: ${task.dueDate}',
+      ),
+    );
 
     if (mounted) {
       Navigator.pop(context);

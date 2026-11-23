@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../crash/presentation/crash_log_screen.dart';
+
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
@@ -64,6 +66,22 @@ class SettingsScreen extends StatelessWidget {
             subtitle: const Text("Version 1.0.0"),
             onTap: () {},
           ),
+
+          // ------------------------------------------------------------
+          // CRASH LOG
+          // ------------------------------------------------------------
+          ListTile(
+            leading: const Icon(Icons.bug_report),
+            title: const Text("Crash Log"),
+            subtitle: const Text("View recorded application errors"),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const CrashLogScreen()),
+              );
+            },
+          ),
+          const Divider(),
         ],
       ),
     );

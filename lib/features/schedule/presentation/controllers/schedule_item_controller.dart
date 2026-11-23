@@ -64,4 +64,33 @@ class ScheduleItemController extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  Future<void> toggleCompleted(ScheduleItem item) async {
+    final updatedItem = ScheduleItem(
+      id: item.id,
+      type: item.type,
+      title: item.title,
+      notes: item.notes,
+      subtype: item.subtype,
+      dateTime: item.dateTime,
+
+      completed: !item.completed,
+
+      notificationsEnabled: item.notificationsEnabled,
+
+      reminderMinutesBefore: item.reminderMinutesBefore,
+
+      notificationId: item.notificationId,
+
+      recurring: item.recurring,
+
+      recurrenceType: item.recurrenceType,
+    );
+    await _box.put(updatedItem.id, updatedItem);
+
+    _items.clear();
+    _items.addAll(_box.values);
+
+    notifyListeners();
+  }
 }

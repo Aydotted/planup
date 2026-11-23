@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
+
+import '../../../../shared/services/error_logger.dart';
 
 class CrashLogScreen extends StatefulWidget {
   const CrashLogScreen({super.key});
@@ -56,12 +59,29 @@ class _CrashLogScreenState extends State<CrashLogScreen> {
       appBar: AppBar(
         title: const Text('Crash Log'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.copy),
+            onPressed: () async {
+              await Clipboard.setData(ClipboardData(text: _logText));
+
+              if (!mounted) return;
+
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text('Crash log copied')));
+            },
+          ),
+          IconButton(icon: const Icon(Icons.refresh), onPressed: _loadCrashLog),
           IconButton(icon: const Icon(Icons.delete), onPressed: _clearCrashLog),
         ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        child: Text(_logText, style: const TextStyle(fontSize: 14)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [Text(_logText, style: const TextStyle(fontSize: 14))],
+        ),
+        //child: Text(_logText, style: const TextStyle(fontSize: 14)),
       ),
     );
   }

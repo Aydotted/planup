@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:hive/hive.dart';
 
 import '../../../calendar/presentation/controllers/calendar_controller.dart';
 import '../../../shifts/domain/entities/shift.dart';
 import '../../../shifts/domain/entities/shift_template.dart';
 import '../../../shifts/presentation/controllers/shift_template_controller.dart';
+
+import '../../../../shared/services/error_logger.dart';
 
 class AddShiftScreen extends StatefulWidget {
   final Shift? existingShift;
@@ -203,9 +204,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                       template,
                     );
 
-                    final box = Hive.box<ShiftTemplate>('shiftTemplate');
-
-                    debugPrint('Template in Hive after save: ${box.length}');
+                    debugPrint('Custom shift template saved: ${template.name}');
 
                     if (!mounted) return;
 
@@ -286,6 +285,10 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
       );
     } else {
       await context.read<CalendarController>().addShift(newShift);
+      ErrorLogger.logCustom(
+        'Shift saved',
+        error: Exception('Type: ${newShift.shiftType}, Date: ${newShift.date}'),
+      );
     }
 
     if (!mounted) return;
@@ -298,6 +301,9 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     final templateController = context.watch<ShiftTemplateController>();
 
     final customTemplates = templateController.templates;
+    debugPrint('Selected template: ${selectedTemplate?.name}');
+
+    debugPrint('Template count: ${customTemplates.length}');
 
     return Scaffold(
       appBar: AppBar(title: const Text('Add Shift')),
@@ -342,21 +348,24 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
               items: shiftTypes.map((shift) {
                 return DropdownMenuItem(value: shift, child: Text(shift));
               }).toList(),
-              onChanged: (value) {
-                if (value == null) return;
+              onChanged: selectedTemplate != null
+                  ? null
+                  : (value) {
+                      if (value == null) return;
 
-                setState(() {
-                  selectedTemplate = null;
-                  selectedShiftType = value;
-                  applyShiftTemplate(value);
-                });
-              },
+                      setState(() {
+                        selectedTemplate = null;
+                        selectedShiftType = value;
+                        applyShiftTemplate(value);
+                      });
+                    },
             ),
 
             const SizedBox(height: 16),
 
             if (customTemplates.isNotEmpty)
               DropdownButtonFormField<ShiftTemplate>(
+                value: selectedTemplate,
                 decoration: const InputDecoration(
                   labelText: 'Custom Templates',
                   border: OutlineInputBorder(),
@@ -382,9 +391,28 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                   }
 
                   setState(() {
+                    selectedTemplate = template;
                     applyCustomTemplate(template);
                   });
+
+                  Navigator.pop(context);
                 },
+              ),
+
+            if (selectedTemplate != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: TextButton.icon(
+                  icon: const Icon(Icons.refresh),
+                  label: const Text('Use Built-In Shift Types'),
+                  onPressed: () {
+                    setState(() {
+                      selectedTemplate = null;
+                      selectedShiftType = 'Long Day';
+                      applyShiftTemplate('Long Day');
+                    });
+                  },
+                ),
               ),
 
             const SizedBox(height: 16),

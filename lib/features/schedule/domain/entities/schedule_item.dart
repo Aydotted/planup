@@ -49,6 +49,12 @@ class ScheduleItem extends HiveObject {
   @HiveField(9)
   final int? notificationId;
 
+  @HiveField(10)
+  final bool? recurring;
+
+  @HiveField(11)
+  final String? recurrenceType;
+
   ScheduleItem({
     required this.id,
     required this.type,
@@ -57,9 +63,10 @@ class ScheduleItem extends HiveObject {
     required this.subtype,
     required this.dateTime,
     this.completed = false,
-
     this.notificationsEnabled = true,
     this.reminderMinutesBefore = 30,
     this.notificationId,
+    this.recurring = false,
+    this.recurrenceType = 'none',
   });
 }

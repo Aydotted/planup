@@ -27,13 +27,15 @@ class ScheduleItemAdapter extends TypeAdapter<ScheduleItem> {
       notificationsEnabled: fields[7] as bool,
       reminderMinutesBefore: fields[8] as int,
       notificationId: fields[9] as int?,
+      recurring: fields[10] as bool?,
+      recurrenceType: fields[11] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ScheduleItem obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -53,7 +55,11 @@ class ScheduleItemAdapter extends TypeAdapter<ScheduleItem> {
       ..writeByte(8)
       ..write(obj.reminderMinutesBefore)
       ..writeByte(9)
-      ..write(obj.notificationId);
+      ..write(obj.notificationId)
+      ..writeByte(10)
+      ..write(obj.recurring)
+      ..writeByte(11)
+      ..write(obj.recurrenceType);
   }
 
   @override
