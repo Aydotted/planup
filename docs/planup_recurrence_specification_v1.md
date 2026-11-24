@@ -50,3 +50,16 @@ recurrenceEndType
 recurrenceEndDate
 maximumOccurrences
 seriesId
+
+Notes
+Future integration with:
+
+Recovery Engine
+Burnout Detection
+Recommendation Engine
+Forecasting Engine
+Future recurrence intelligence:
+
+Recovery Aware
+Burnout Aware
+Flexible Scheduling
