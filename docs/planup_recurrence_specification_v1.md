@@ -63,3 +63,28 @@ Future recurrence intelligence:
 Recovery Aware
 Burnout Aware
 Flexible Scheduling
+
+Visibility Strategy
+PlanUp will use a Hybrid Future Visibility Model.
+
+Recurring series are stored as parent records.
+
+Future occurrences are generated in advance and remain linked to a common seriesId.
+
+Benefits:
+
+Future planning
+Holiday planning
+Shift forecasting
+Burnout forecasting
+Recovery modelling
+Recommendation engine integration
+Generation windows:
+
+Tasks: 90 days
+
+Schedule Items: 12 months
+
+Shifts: 6 months
+
+Habits: 30-90 days
