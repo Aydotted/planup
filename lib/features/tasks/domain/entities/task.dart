@@ -197,7 +197,7 @@ class Task extends HiveObject {
     bool? deleted,
     DateTime? startTime,
     DateTime? endTime,
-    String? recurrenceSeriesId;
+    String? recurrenceSeriesId,
     int? notificationId,
   }) {
     return Task(
@@ -228,8 +228,7 @@ class Task extends HiveObject {
       deleted: deleted ?? this.deleted,
       startTime: startTime ?? this.startTime,
       endTime: endTime ?? this.endTime,
-      recurrenceSeriesId:
-          recurrenceSeriesId ?? this.recurrenceSeriesId,
+      recurrenceSeriesId: recurrenceSeriesId ?? this.recurrenceSeriesId,
       notificationId: notificationId ?? this.notificationId,
     );
   }

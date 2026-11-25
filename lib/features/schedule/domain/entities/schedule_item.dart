@@ -55,6 +55,9 @@ class ScheduleItem extends HiveObject {
   @HiveField(11)
   final String? recurrenceType;
 
+  @HiveField(12)
+  final String? recurrenceSeriesId;
+
   ScheduleItem({
     required this.id,
     required this.type,
@@ -68,5 +71,6 @@ class ScheduleItem extends HiveObject {
     this.notificationId,
     this.recurring = false,
     this.recurrenceType = 'none',
+    this.recurrenceSeriesId,
   });
 }
