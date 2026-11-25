@@ -95,4 +95,8 @@ class RecurrenceService {
 
     return occurrences;
   }
+
+  static bool shouldGenerateFutureOccurrences(RecurrenceRule rule) {
+    return rule.recurrenceType != RecurrenceType.none;
+  }
 }

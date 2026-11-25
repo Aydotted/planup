@@ -6,6 +6,11 @@ import '../../../tasks/domain/usecases/get_tasks_usecase.dart';
 import '../../../tasks/data/repositories/task_repository.dart';
 import '../../../tasks/data/repositories/hive_task_repository.dart';
 
+import '../../../../core/recurrence/recurrence_rule.dart';
+import '../../../../core/recurrence/recurrence_type.dart';
+import '../../../../core/recurrence/recurrence_end_type.dart';
+import '../../../../core/recurrence/recurrence_service.dart';
+
 class TaskController extends ChangeNotifier {
   final TaskRepository _repository = HiveTaskRepository();
 
@@ -27,6 +32,34 @@ class TaskController extends ChangeNotifier {
 
     _isLoading = false;
     notifyListeners();
+  }
+
+  RecurrenceRule? _buildRecurrenceRule(Task task) {
+    switch (task.recurrence) {
+      case 'daily':
+        return const RecurrenceRule(
+          recurrenceType: RecurrenceType.daily,
+          interval: 1,
+          endType: RecurrenceEndType.never,
+        );
+
+      case 'weekly':
+        return const RecurrenceRule(
+          recurrenceType: RecurrenceType.weekly,
+          interval: 1,
+          endType: RecurrenceEndType.never,
+        );
+
+      case 'monthly':
+        return const RecurrenceRule(
+          recurrenceType: RecurrenceType.monthly,
+          interval: 1,
+          endType: RecurrenceEndType.never,
+        );
+
+      default:
+        return null;
+    }
   }
 
   Future<void> addTask(Task task) async {

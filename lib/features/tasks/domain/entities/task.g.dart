@@ -42,6 +42,7 @@ class TaskAdapter extends TypeAdapter<Task> {
       deleted: fields[22] as bool,
       startTime: fields[23] as DateTime?,
       endTime: fields[24] as DateTime?,
+      recurrenceSeriesId: fields[25] as String?,
       notificationId: fields[99] as int?,
     );
   }
@@ -49,7 +50,7 @@ class TaskAdapter extends TypeAdapter<Task> {
   @override
   void write(BinaryWriter writer, Task obj) {
     writer
-      ..writeByte(26)
+      ..writeByte(27)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -100,6 +101,8 @@ class TaskAdapter extends TypeAdapter<Task> {
       ..write(obj.startTime)
       ..writeByte(24)
       ..write(obj.endTime)
+      ..writeByte(25)
+      ..write(obj.recurrenceSeriesId)
       ..writeByte(99)
       ..write(obj.notificationId);
   }
