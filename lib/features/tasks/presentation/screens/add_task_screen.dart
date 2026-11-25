@@ -8,7 +8,9 @@ import '../../../tasks/domain/entities/task.dart';
 import '../../../tasks/presentation/controllers/task_controller.dart';
 import '../../../category/domain/entities/category.dart';
 import '../../../category/presentation/category_picker_screen.dart';
+
 import '../../../../shared/services/error_logger.dart';
+import '../../../../core/recurrence/recurrence_series.dart';
 
 class AddTaskScreen extends StatefulWidget {
   final DateTime? prefilledDate;
@@ -111,6 +113,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
     final now = DateTime.now();
 
+    String? recurrenceSeriesId;
+
+    if (selectedRecurrence != 'none') {
+      recurrenceSeriesId = RecurrenceSeries.generateSeriesId();
+    }
+
     final task = Task(
       id: const Uuid().v4(),
       title: _titleController.text.trim(),
@@ -127,6 +135,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       categoryColor: _categoryColor,
       categoryIconCodePoint: _categoryIconCodePoint,
       recurrence: selectedRecurrence,
+      recurrenceSeriesId: recurrenceSeriesId,
       reminderMinutesBefore: _reminderEnabled ? _reminderMinutesBefore : 0,
       attachments: _attachments,
       tags: const [],

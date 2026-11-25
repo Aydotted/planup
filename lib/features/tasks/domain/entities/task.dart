@@ -173,6 +173,10 @@ class Task extends HiveObject {
     progress = completedCount / subtasks.length;
   }
 
+  bool get isRecurring {
+    return recurrence != 'none';
+  }
+
   Task copyWith({
     String? title,
     String? description,
