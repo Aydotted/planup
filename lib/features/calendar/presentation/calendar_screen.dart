@@ -25,6 +25,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
 
+  bool hasTasksForDate(BuildContext context, DateTime day) {
+    return context.read<TaskController>().tasksForDate(day).isNotEmpty;
+  }
+
   Color getShiftColour(BuildContext context, String shiftType) {
     final templateController = context.read<ShiftTemplateController>();
 
