@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:planup_fixed_new/features/schedule/presentation/widgets/schedule_item_details_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:planup_fixed_new/features/tasks/presentation/controllers/task_controller.dart';
 
 import 'package:planup_fixed_new/features/shifts/domain/entities/shift.dart';
 import 'package:planup_fixed_new/features/calendar/presentation/controllers/calendar_controller.dart';
@@ -180,6 +181,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     final calendar = context.watch<CalendarController>();
     final scheduleItems = context.watch<ScheduleItemController>().items;
+    final taskController = context.watch<TaskController>();
 
     final selectedDayShifts = calendar.shiftsForDate(_selectedDay);
 
@@ -188,6 +190,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
           item.dateTime.month == _selectedDay.month &&
           item.dateTime.day == _selectedDay.day;
     }).toList();
+
+    final selectedDayTasks = taskController.tasksForDate(_selectedDay);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Calendar')),
@@ -388,7 +392,40 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       .toList(),
                 ],
 
-                if (selectedDayShifts.isEmpty && selectedDayItems.isEmpty)
+                if (selectedDayTasks.isNotEmpty) ...[
+                  const Padding(
+                    padding: EdgeInsets.all(12),
+                    child: Text(
+                      'Tasks',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+
+                  ...selectedDayTasks.map(
+                    (task) => Card(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 4,
+                      ),
+                      child: ListTile(
+                        leading: Icon(
+                          task.isCompleted
+                              ? Icons.check_circle
+                              : Icons.radio_button_unchecked,
+                        ),
+                        title: Text(task.title),
+                        subtitle: Text(task.recurrence.toUpperCase()),
+                      ),
+                    ),
+                  ),
+                ],
+
+                if (selectedDayShifts.isEmpty &&
+                    selectedDayItems.isEmpty &&
+                    selectedDayTasks.isEmpty)
                   const Center(
                     child: Padding(
                       padding: EdgeInsets.all(40),

@@ -99,4 +99,18 @@ class RecurrenceService {
   static bool shouldGenerateFutureOccurrences(RecurrenceRule rule) {
     return rule.recurrenceType != RecurrenceType.none;
   }
+
+  static RecurrenceRule? fromTaskRecurrence(String recurrence) {
+    switch (recurrence) {
+      case 'daily':
+        return const RecurrenceRule(recurrenceType: RecurrenceType.daily);
+      case 'weekly':
+        return const RecurrenceRule(recurrenceType: RecurrenceType.weekly);
+
+      case 'monthly':
+        return const RecurrenceRule(recurrenceType: RecurrenceType.monthly);
+      default:
+        return null;
+    }
+  }
 }
