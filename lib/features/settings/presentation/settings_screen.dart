@@ -52,7 +52,7 @@ class SettingsScreen extends StatelessWidget {
             title: const Text("Categories"),
             subtitle: const Text("Manage task categories"),
             onTap: () {
-              Navigator.pushNamed(context, "/categoryManagement");
+              Navigator.pushNamed(context, "/categoryManager");
             },
           ),
           const Divider(),

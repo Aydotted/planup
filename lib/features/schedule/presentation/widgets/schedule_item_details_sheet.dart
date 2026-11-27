@@ -13,7 +13,7 @@ class ScheduleItemDetailsSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Padding(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -84,6 +84,8 @@ class ScheduleItemDetailsSheet extends StatelessWidget {
                 ),
               ),
             ),
+
+            const SizedBox(height: 12),
 
             SizedBox(
               width: double.infinity,

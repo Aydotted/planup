@@ -461,10 +461,10 @@ class _HomeScreenState extends State<HomeScreen>
                   const SizedBox(height: 12),
 
                   SizedBox(
-                    height: 140,
+                    height: 115,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: upcomingItems.length,
+                      itemCount: min(upcomingItems.length, 2),
                       itemBuilder: (context, index) {
                         final item = upcomingItems[index];
 
@@ -548,6 +548,7 @@ class _HomeScreenState extends State<HomeScreen>
                                       Text(
                                         getFriendlyDate(item.dateTime),
                                         style: TextStyle(
+                                          fontSize: 12,
                                           color: Colors.grey.shade700,
                                         ),
                                       ),

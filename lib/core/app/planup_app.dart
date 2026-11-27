@@ -8,6 +8,8 @@ import 'package:planup_fixed_new/core/routing/app_navigator.dart';
 import 'package:planup_fixed_new/features/tasks/presentation/controllers/task_controller.dart';
 import 'package:planup_fixed_new/features/calendar/presentation/controllers/calendar_controller.dart';
 import 'package:planup_fixed_new/features/category/presentation/controllers/category_controller.dart';
+import 'package:planup_fixed_new/features/profile/presentation/profile_screen.dart';
+import 'package:planup_fixed_new/features/settings/presentation/theme_customisation_screen.dart';
 
 // Routing / Screens
 import 'package:planup_fixed_new/core/routing/home_screen.dart';
@@ -19,7 +21,6 @@ import 'package:planup_fixed_new/features/schedule/presentation/screens/add_shif
 import 'package:planup_fixed_new/features/dashboard/presentation/dashboard_screen.dart';
 import 'package:planup_fixed_new/features/settings/presentation/settings_screen.dart';
 import 'package:planup_fixed_new/features/settings/category_manager_screen.dart';
-import 'package:planup_fixed_new/features/settings/presentation/screens/notification_settings.dart';
 import 'package:planup_fixed_new/features/habits/presentation/controllers/habit_controller.dart';
 import 'package:planup_fixed_new/features/habits/presentation/screens/habit_screen.dart';
 import 'package:planup_fixed_new/features/schedule/presentation/controllers/schedule_item_controller.dart';
@@ -74,6 +75,8 @@ class PlanUpApp extends StatelessWidget {
           '/dashboard': (_) => const DashboardScreen(),
           '/habits': (_) => const HabitScreen(),
           '/settings': (_) => SettingsScreen(),
+          '/profile': (_) => const ProfileScreen(),
+          '/themeSettings': (_) => const ThemeCustomisationScreen(),
           '/smartLists': (_) => const SmartListsScreen(listType: 'today'),
           '/categoryManager': (_) => const CategoryManagerScreen(),
         },
