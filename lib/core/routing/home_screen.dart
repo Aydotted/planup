@@ -670,7 +670,44 @@ class _HomeScreenState extends State<HomeScreen>
                     children: [
                       _navIcon(Icons.dashboard, '/dashboard'),
                       _navIcon(Icons.calendar_month, '/calendar'),
-                      _navIcon(Icons.add_box, '/addSchedule'),
+                      GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (_) => SafeArea(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  ListTile(
+                                    leading: const Icon(Icons.task),
+                                    title: const Text('Task'),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      Navigator.pushNamed(context, '/addTask');
+                                    },
+                                  ),
+                                  ListTile(
+                                    leading: const Icon(Icons.work),
+                                    title: const Text('Shift'),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      Navigator.pushNamed(
+                                        context,
+                                        '/addSchedule',
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                        child: const Icon(
+                          Icons.add_box,
+                          color: Colors.white,
+                          size: 28,
+                        ),
+                      ),
                       _navIcon(Icons.list, '/smartLists'),
                       _navIcon(Icons.local_fire_department, '/habits'),
                       _navIcon(Icons.settings, '/settings'),
